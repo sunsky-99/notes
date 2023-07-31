@@ -1,0 +1,75 @@
+# version: 3.8
+
+networks:
+  local-net:
+    external: true
+
+services:
+
+  mysql7:
+    image: mysql:5.7.42-debian
+    container_name: mysql-5.7.42
+    restart: on-failure:3
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    command: --lower_case_table_names=1
+    ports:
+      - 3307:3306
+    volumes:
+      - /usr/local/docker/mysql-5.7.42/data:/var/lib/mysql
+      - /usr/local/docker/mysql-5.7.42/mysql.conf.d:/etc/mysql/mysql.conf.d
+      - /usr/local/docker/mysql-5.7.42/logs:/var/log/mysql
+    networks:
+      - local-net
+      
+  mysql8:
+    image: mysql:8.0.33-debian
+    container_name: mysql-8.0.33
+    restart: on-failure:3
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    command: --lower_case_table_names=1
+    ports:
+      - 3308:3306
+    volumes:
+      - /usr/local/docker/mysql-8.0.33/data:/var/lib/mysql
+      - /usr/local/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d
+      - /usr/local/docker/mysql-8.0.33/logs:/var/log/mysql
+    networks:
+      - local-net
+
+  nginx:
+    image: nginx:1.25-alpine3.17
+    container_name: nginx-1.25
+    restart: on-failure:3
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /usr/local/docker/nginx-1.25/conf.d:/etc/nginx/conf.d
+      - /usr/local/docker/nginx-1.25/html:/usr/share/nginx/html
+      - /usr/local/docker/nginx-1.25/log:/var/log/nginx
+    networks:
+      - local-net
+      
+  redis:
+    image: redis:6.0.20-alpine3.18
+    container_name: redis-6.0.20
+    restart: on-failure:3
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 6376:6379
+    volumes:
+      - /usr/local/docker/redis-6.0.20/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - /usr/local/docker/redis-6.0.20/data:/data
+      - /usr/local/docker/redis-6.0.20/logs:/var/log/redis
+    networks:
+      - local-net
+
+      

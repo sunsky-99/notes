@@ -1,0 +1,227 @@
+
+sudo systemctl start docker
+//============================================================================================
+docker 下载镜像
+docker pull nginx:1.25
+
+docker 删除镜像
+docker rmi nginx:1.25
+docker rmi eb4a57159180 
+
+docker本地镜像打包导出
+docker save -o nginx.tar nginx:1.25
+// 不推荐；会丢失镜像名称和版本号
+docker save -o nginx.tar eb4a57159180 
+
+docker 本地镜像文件加载	
+docker load -i nginx.tar 
+
+docker 创建容器时会运行该容器 
+docker run --name nginx_1.25 -p 80:80 -d nginx:1.25
+docker run --name nginx_1.25 -p 80:80 -d 021283c8eb95 
+// --name nginx_1.25 指定容器名称
+// -p 80:80 端口映射：前表示主机部分，：后表示容器部分。
+// -d 后台运行容器
+// --restart=always  # 表示容器退出时，docker会总是自动重启这个容器
+// --restart=on-failure:3  # 表示容器的退出状态码非0(非正常退出)，自动重启容器，3是自动重启的次数。超过3此则不重启
+// --restart=no  # 默认值，容器退出时，docker不自动重启容器
+// --restart=unless-stopped  # 表示容器退出时总是重启，但是不考虑docker守护进程运行时就已经停止的容器
+// -it 给当前进入的容器创建一个标准输入、输出终端，允许与容器交互
+// 同步时区
+重新启动一个容器，加上如下参数，即可使用宿主机时间 
+-e TZ=Asia/Shanghai
+不想重新启动，或者不能重新启动
+docker cp /etc/localtime [containerId]:/etc/localtime
+
+docker 容器停止
+docker stop nginx_1.25 
+docker stop de3b2bc6c61c 
+
+docker 容器启动
+docker start nginx_1.25
+docker start de3b2bc6c61c  
+
+docker 容器重新启动
+docker restart nginx_1.25
+docker restart de3b2bc6c61c 
+
+docker 容器暂停
+docker pause nginx_1.25
+docker pause de3b2bc6c61c
+docker 容器恢复运行
+docker unpause nginx_1.25
+docker unpause de3b2bc6c61c
+
+docker 查看容器运行日志
+docker logs nginx_1.25
+docker logs de3b2bc6c61c
+// -f 持续的打印日志
+
+docker 查看运行中的容器状态
+docker ps
+
+docker 查看所有容器状态
+docker ps -a
+
+docker 删除容器
+docker rm nginx_1.25
+docker rm de3b2bc6c61c
+// -f 强制删除（运行中的容器也会被删）
+
+
+数据卷(volume) 是一个虚拟目录，指向宿主机文件系统中的某个目录
+
+创建一个 volume
+docker volume create volume_test1
+
+显示一个或者多个 volume 的信息
+docker volume inspect volume_test1
+
+列出所有的 volume
+docker volume ls
+
+删除未使用的 volume
+docker volume prune
+
+删除一个或多个指定的 volume
+docker volume rm volume_test1
+
+//============================================================================================
+
+docker 进入容器
+docker exec -it nginx_1.25 bash
+docker exec -it de3b2bc6c61c bash
+// docker exec 进入容器内部，执行一个命令
+// -it 给当前进入的容器创建一个标准输入、输出终端，允许与容器交互
+// bash 进入容器后执行的命令，bash是一个linux终端交互命令
+// 进入容器后可用 sed 流编辑器
+
+
+复制docker容器的文件到主机中
+docker cp [容器id]：docker容器中配置文件路径  主机路径
+docker cp ced9834d3bdf:/etc/mysql/my.cnf  /work/docker/mysql3309/config/my.cnf
+修改配置文件中出错的部分
+配置文件到docker容器中
+docker cp 主机文件路径 容器id：docker容器中配置文件路径
+docker cp /work/docker/mysql3309/config/my.cnf ced9834d3bdf:/etc/mysql/my.cnf
+
+//============================================================================================
+
+// docker 镜像结构
+镜像是将应用程序及其需要的系统函数库、环境、配置、依赖打包而成 
+
+基础镜像(Baselmage)应用依赖的系统函数库、环境、配置、文件等
+层( Layer )在Baselmage基础上添加安装包、依赖、配置等，每次操作都形成新的一层。
+入口(Entrypoint)镜像运行入口，一般是程序启动的脚本和参数
+
+docker 自定义镜像
+Dockerfile 就是一个文本文件，其中包含一个个的指令(Instruction)，用指令来说明要执行什么操作来构建镜像。每
+一个指令都会形成一层Layer。
+
+指令
+FROM 指定基础镜像									
+FROM centos:7
+
+ENV	 设置环境变量									
+ENY key values
+
+COPY 拷贝本地文件到镜像的指定目录						
+COPY ./mysql-5.7.rpm/tmp
+
+RUN 执行linux的shell命令，一般是安装过程的命令
+RUN yum install gcc
+
+EXPOSE 指定容器运行时监听的端口，是给镜像使用者看的
+EXPOSE 8080
+
+ENTRYPOINT 镜像中应用的启动命令，容器运行时调用
+ENTRYPOINT java -jar xx.jar
+
+Dockerfile 制作镜像  到Dockerfile所在目录执行命令
+docker build -t demo:1.2 .
+
+//============================================================================================
+
+DockerCompose 部署微服务集群 
+docker compose up -d
+docker-compose -f docker-compose-nacos.yml -p nacos up -d
+-f：指定使用的compose模板文件，默认为当前目录下的docker-compose.yaml文件，可以多次指定。 
+-p：指定项目的名称，默认将使用所在目录名称作为项目名。 
+up：启动服务。该命令十分强大，它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。 
+链接的服务都将会被自动启动，除非已经处于运行状态。 
+可以说，大部分时候都可以直接通过该命令来启动一个项目。 
+默认情况，docker-compose up 启动的容器都在前台，控制台将会同时打印所有容器的输出信息，可以很方便进行调试。 
+当通过 Ctrl-C 停止命令时，所有容器将会停止。 
+如果使用 docker-compose up -d，将会在后台启动并运行所有的容器。一般推荐生产环境下使用该选项。 
+-d：在后台运行服务容器；
+
+//============================================================================================
+
+//docker 创建网络连接
+docker network create local-net
+
+//docker 列出所有网络
+docker network ls
+
+//docker 显示一个或多个网络的详细信息
+docker network inspect local-net
+
+
+//============================================================================================
+docker 容器运行
+
+// nicolaka/netshoot
+docker run --name netshoot --network local-net -itd nicolaka/netshoot:v0.11 
+# DNS 工具
+dig mysql-5.7
+
+// alpine
+docker run --name alpine-3.18 --net local-net -itd alpine:3.18
+
+// postgres
+docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=123456 --net local-net -d postgres:15.3-alpine3.18
+
+
+// mysql
+docker run --name mysql5.7.42 -p 3307:3306 -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:5.7.42-debian --lower-case-table-names=1
+
+docker run --name mysql8.0.33 -p 3308:3306 -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
+
+docker run --name mysql-5.7.42 -p 3307:3306 -v /E/work/docker/mysql-5.7.42/data:/var/lib/mysql -v /E/work/docker/mysql-5.7.42/mysql.conf.d:/etc/mysql/mysql.conf.d -v /E/work/docker/mysql-5.7.42/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:5.7.42-debian --lower-case-table-names=1
+
+docker run --name mysql-8.0.33 -p 3308:3306 -v /E/work/docker/mysql-8.0.33/data:/var/lib/mysql -v /E/work/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d -v /E/work/docker/mysql-8.0.33/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
+
+docker run --name mysql-5.7.42 -p 3307:3306 -v /usr/local/docker/mysql-5.7.42/data:/var/lib/mysql -v /usr/local/docker/mysql-5.7.42/mysql.conf.d:/etc/mysql/mysql.conf.d -v /usr/local/docker/mysql-5.7.42/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=22333@MySQLcloud_Zcy1! --net local-net -d mysql:5.7.42-debian --lower-case-table-names=1
+
+docker run --name mysql-8.0.33 -p 3308:3306 -v /usr/local/docker/mysql-8.0.33/data:/var/lib/mysql -v /usr/local/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d -v /usr/local/docker/mysql-8.0.33/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=22333@MySQLcloud_Zcy1! --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
+
+
+// nginx
+docker run --name nginx -p 81:80 --net local-net -d nginx:1.25-alpine3.17
+
+docker run --name nginx-1.25 -p 80:80 -p 443:443 -v /E/work/docker/nginx-1.25/conf.d:/etc/nginx/conf.d -v /E/work/docker/nginx-1.25/html:/usr/share/nginx/html -v /E/work/docker/nginx-1.25/log:/var/log/nginx --net local-net -itd nginx:1.25-alpine3.17
+
+docker run --name nginx-1.25 -p 80:80 -p 443:443 -v /usr/local/docker/nginx-1.25/conf.d:/etc/nginx/conf.d -v /usr/local/docker/nginx-1.25/html:/usr/share/nginx/html -v /usr/local/docker/nginx-1.25/log:/var/log/nginx --net local-net -itd nginx:1.25-alpine3.17
+
+// nginx-proxy-manager
+docker pull jc21/nginx-proxy-manager:2.10.3
+
+docker-compose up -d
+
+Email: admin@example.com
+Password: changeme
+
+
+// redis 
+docker run --name redis-6.0.20 -p 6379:6379 -v /E/work/docker/redis-6.0.20/conf/redis.conf:/etc/redis/redis.conf -v /E/work/docker/redis-6.0.20/data:/data -v /E/work/docker/redis-6.0.20/logs:/var/log/redis --net local-net -d redis:6.0.20-alpine3.18 redis-server /etc/redis/redis.conf
+
+docker run --name redis-6.0.20 -p 6379:6379 -v /usr/local/docker/redis-6.0.20/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/docker/redis-6.0.20/data:/data -v /usr/local/docker/redis-6.0.20/logs:/var/log/redis --net local-net -d redis:6.0.20-alpine3.18 redis-server /etc/redis/redis.conf
+// log文件可能需要添加读写权限 或者不记录log(在配置文件中设置 logfile "")
+docker run --name redis-6.0.20 -p 6379:6379 -v /usr/local/docker/redis-6.0.20/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/docker/redis-6.0.20/data:/data --net local-net -d redis:6.0.20-alpine3.18 redis-server /etc/redis/redis.conf
+
+// 进入redis容器时 redis客户端命令
+docker exec -it nginx_1.25 redis-cli
+// 等同于
+docker exec -it nginx_1.25 bash
+redis-cli
+ 

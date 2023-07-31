@@ -1,0 +1,110 @@
+# version: 3.8
+
+networks:
+  local-net:
+    external: true
+
+services:
+
+  alpine:
+    image: alpine:3.18
+    container_name: alpine
+    restart: on-failure:3
+    # 相当于-it的参数 stdin_open和tty
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - local-net
+  
+  netshoot:
+    image: nicolaka/netshoot:v0.11
+    container_name: netshoot
+    restart: on-failure:3
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - local-net
+      
+  nginx:
+    image: nginx:1.25-alpine3.17
+    container_name: nginx
+    restart: on-failure:3
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - local-net
+      
+  redis6:
+    image: redis:6.0.20-alpine3.18
+    container_name: redis6
+    restart: on-failure:3
+    command: redis-server
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 6376:6379
+    networks:
+      - local-net  
+      
+  redis7:
+    image: redis:7.0.12-alpine3.18
+    container_name: redis7
+    restart: on-failure:3
+    command: redis-server
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 6377:6379
+    networks:
+      - local-net  
+  
+  postgres:
+    image: postgres:15.3-alpine3.18
+    container_name: postgres
+    restart: on-failure:3
+    environment:
+      POSTGRES_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    ports:
+      - 5432:5432
+#    volumes:
+#      - ./data:/data
+#      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - local-net
+      
+  mysql7:
+    image: mysql:5.7.42-debian
+    container_name: mysql7
+    restart: on-failure:3
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    command: --lower_case_table_names=1
+    ports:
+      - 3307:3306
+    networks:
+      - local-net
+
+  mysql8:
+    image: mysql:8.0.33-debian
+    container_name: mysql8
+    restart: on-failure:3
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    command: --lower_case_table_names=1
+    ports:
+      - 3308:3306
+    networks:
+      - local-net  
+      
+  
+      
