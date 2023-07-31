@@ -1,0 +1,38 @@
+查看linux版本信息
+cat /etc/issue
+
+pwd 显示工作目录。
+cd
+ls
+ll 
+mkdir 创建目录
+mkdir test
+
+rm 删除文件/目录
+rm test  
+
+//安装vim
+apt-get update
+apt-get install sudo
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install vim
+
+//安装ApacheBench
+sudo apt-get install apache2-utils
+//查看ApacheBench版本
+ab -V
+
+
+生成文件
+touch data.json
+// ApacheBench性能测试
+ab -n 1000 -c 100 -p data.json -T application/json http://localhost:8080/cs/save
+
+free 命令显示系统内存的使用情况，包括物理内存、交换内存(swap)和内核缓冲区内存
+free
+
+// 查看所有jvm进程
+jcmd
+// 查看 进程 实时内存  
+jmap -heap 1
