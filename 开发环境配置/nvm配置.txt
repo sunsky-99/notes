@@ -1,0 +1,29 @@
+添加环境变量 
+	NVM_HOME E:\nvm						指向nvm
+	NVM_SYMLINK E:\nvm\nodejs			指向nodejs 
+	NODE_PATH E:\nvm\node_global\node_modules
+添加Path
+	%NVM_HOME%							指向nvm
+	%NVM_SYMLINK%						指向nodejs 
+	%NODE_PATH%
+	
+settings.txt 内容
+root: E:\nvm
+path: E:\nvm\nodejs
+nvm node_mirror https://npm.taobao.org/mirrors/node/
+nvm npm_mirror https://npm.taobao.org/mirrors/npm/
+
+
+nvm install 12.22.12 
+nvm install 14.21.3  
+nvm install 16.20.0 
+nvm install 18.16.0
+
+nvm use 16.20.0 
+nvm目录下创建2个文件夹
+E:\nvm\node_global
+E:\nvm\node_cache
+
+npm config set prefix "E:\nvm\node_global"
+npm config set cache "E:\nvm\node_cache"
+ 
