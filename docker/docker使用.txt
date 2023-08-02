@@ -228,7 +228,7 @@ redis-cli
 
 // registry 注册中心  docker私有镜像仓库
 
-// win 先新建 auth/htpasswd 目录文件
+// win 先新建 auth 目录
 // apache服务器创建密码认证文件
 docker run --rm --entrypoint htpasswd httpd:2.4.57-alpine3.18 -Bbn testuser testpassword | Set-Content -Encoding ASCII auth/htpasswd
 

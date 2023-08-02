@@ -1,0 +1,65 @@
+[ req ]
+# 表示在生成CSR时不提示用户输入，以避免手动输入信息
+prompt = no
+
+# 指定生成密钥对的位数。一般使用2048或更高位数的密钥对以获得更高的安全性
+default_bits = 2048
+
+# 指定使用的摘要算法，这里使用SHA-256作为消息摘要算法。
+default_md = sha256
+
+# 指定证书中使用的 Distinguished Name字段的配置区域
+distinguished_name = req_distinguished_name
+
+# 指定扩展字段的配置区域
+req_extensions = v3_req
+
+
+# 指定扩展字段的配置区域
+[ req_distinguished_name ]
+# 国家
+# C = CN
+countryName = CN
+
+# 州或省名称
+# ST = SHH
+stateOrProvinceName = SHH
+
+# 地区或城市名称
+# L = SHH
+localityName = SHH
+
+# 机构名称(公司)
+# O = company
+organizationName = company
+
+# 组织单位名称(部门)
+# OU = department
+organizationalUnitName = department
+
+# 通用名称(域名/网址)
+# CN = sunsky.top
+commonName = sunsky.top
+
+# email地址
+emailAddress = 15872360904@163.com
+
+
+[ v3_req ]
+# 表示证书不是一个CA（证书颁发机构）
+basicConstraints = CA:FALSE
+# 指定密钥用途
+# nonRepudiation：表示该公钥可用于生成数字签名，用于验证数据的完整性和不可否认性。数字签名用于证明某个数据或文档确实来自于特定的签名者，且在传输过程中没有被篡改。
+# digitalSignature：表示该公钥可用于生成数字签名，类似于 nonRepudiation。通常，这两个关键字可以视为等价的，但在某些证书中可能只包含其中一个。
+# keyEncipherment：表示该公钥可用于加密数据传输中的对称密钥，用于确保数据传输的机密性。这个关键字通常用于SSL/TLS证书，用于加密HTTPS连接中的数据。
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+# 指定扩展密钥用途, serverAuth 和 clientAuth 表示证书用于服务器身份验证和客户端身份验证。
+extendedKeyUsage = serverAuth, clientAuth
+# 设置证书的备用名称，例如添加额外的域名（比如主域名和www子域名）或IP地址。在现代的证书要求中，通常需要包含主域名和备用域名。
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = www.sunsky.top
+DNS.2 = ssl.sunsky.top
+DNS.3 = localhost
+DNS.4 = 127.0.0.1

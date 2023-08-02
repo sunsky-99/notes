@@ -1,0 +1,27 @@
+[ req ]
+prompt = no
+default_bits = 2048
+default_md = sha256
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[ req_distinguished_name ]
+C = CN
+ST = HB
+L = GA
+O = sunsky
+OU = dept
+CN = sunsky.top
+emailAddress = 15872360904@163.com
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = www.sunsky.top
+DNS.2 = ssl.sunsky.top
+DNS.3 = localhost
+DNS.4 = 127.0.0.1
