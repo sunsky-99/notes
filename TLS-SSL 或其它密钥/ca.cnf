@@ -16,7 +16,7 @@ emailAddress = 15872360904@163.com
 
 [ v3_req ]
 basicConstraints = CA:TRUE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
 subjectAltName = @alt_names
 
