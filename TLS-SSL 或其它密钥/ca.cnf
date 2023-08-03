@@ -11,14 +11,10 @@ stateOrProvinceName = HB
 localityName = GA
 organizationName = ca
 organizationalUnitName = root
-commonName = localhost
+commonName = ca
 emailAddress = 15872360904@163.com
 
 [ v3_req ]
 basicConstraints = CA:TRUE
 keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
-subjectAltName = @alt_names
-
-[ alt_names ]
-DNS.1 = 127.0.0.1
