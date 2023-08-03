@@ -9,9 +9,9 @@ req_extensions = v3_req
 countryName = CN
 stateOrProvinceName = HB
 localityName = GA
-organizationName = ca
-organizationalUnitName = dept
-commonName = ca
+organizationName = SUN
+organizationalUnitName = DEPT
+commonName = CA
 emailAddress = 15872360904@163.com
 
 [ v3_req ]
