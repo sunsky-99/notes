@@ -10,9 +10,8 @@ C = CN
 ST = HB
 L = GA
 O = sunsky
-OU = dept
-# CN = www.sunsky.top
-CN = 127.0.0.1
+OU = sunsky
+CN = www.sunsky.top
 emailAddress = 15872360904@163.com
 
 [ v3_req ]
