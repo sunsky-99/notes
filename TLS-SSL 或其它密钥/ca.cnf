@@ -6,15 +6,20 @@ distinguished_name = req_distinguished_name
 req_extensions = v3_req
 
 [ req_distinguished_name ]
-countryName = CN
-stateOrProvinceName = HB
-localityName = GA
-organizationName = SUN
-organizationalUnitName = DEPT
-commonName = CA
+C = CN
+ST = HB
+L = GA
+O = sunsky
+OU = sunsky
+CN = sunsky
 emailAddress = 15872360904@163.com
 
 [ v3_req ]
 basicConstraints = CA:TRUE
 keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = localhost
+DNS.2 = 127.0.0.1

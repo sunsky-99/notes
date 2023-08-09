@@ -10,8 +10,8 @@ C = CN
 ST = HB
 L = GA
 O = sunsky
-OU = dept
-CN = 127.0.0.1
+OU = sunsky
+CN = www.sunsky.top
 emailAddress = 15872360904@163.com
 
 [ v3_req ]
@@ -22,7 +22,6 @@ subjectAltName = @alt_names
 
 [ alt_names ]
 DNS.1 = sunsky.top
-DNS.2 = www.sunsky.top
-DNS.3 = ssl.sunsky.top
-DNS.4 = localhost
-DNS.5 = 127.0.0.1
+DNS.2 = ssl.sunsky.top
+DNS.3 = localhost
+DNS.4 = 127.0.0.1
