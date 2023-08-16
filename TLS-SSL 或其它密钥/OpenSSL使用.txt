@@ -1,0 +1,103 @@
+生成RSA私钥(使用aes256加密)
+openssl genrsa -aes256 -passout pass:123456 -out ca.key 2048
+
+创建自签名CA证书请求(CSR)
+openssl req -new -key ca.key -passin pass:123456 -out ca.csr -config ca.cnf
+
+使用上述 CSR 生成自签名 CA 证书
+openssl x509 -req -days 3650 -in ca.csr -signkey ca.key -passin pass:123456 -out ca.crt -extensions v3_req -extfile ca.cnf
+
+
+生成服务器私钥
+openssl genrsa -aes256 -passout pass:123456 -out server.key 2048
+
+生成服务器证书请求（CSR）
+openssl req -new -key server.key -passin pass:123456 -out server.csr -config server.cnf
+
+使用自签名 CA 证书对服务器证书进行签名
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -passin pass:123456 -CAcreateserial -out server.crt -extensions v3_req -extfile server.cnf
+
+
+
+# 与最上方一样
+生成RSA私钥(使用aes256加密)
+# openssl genrsa -aes256 -passout pass:123456 -out ca_private_key.pem 2048
+创建自签名CA证书请求(CSR)
+# openssl req -new -key ca_private_key.pem -passin pass:123456 -out ca.csr -config openssl.cnf
+使用上述 CSR 生成自签名 CA 证书
+# openssl x509 -req -days 3650 -in ca.csr -signkey ca_private_key.pem -passin pass:123456 -out ca.crt -extensions v3_req -extfile openssl.cnf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OpenSSL的配置文件为证书链生成提供了更大的灵活性和控制。以下是使用配置文件为证书链（包括根CA、中间CA和最终服务器/客户端证书）生成的最佳实践：
+
+创建OpenSSL配置文件：
+
+创建一个名为openssl.cnf的配置文件。该文件可以为不同的证书定义多个部分。
+
+为CA初始化目录和数据库：
+mkdir -p myCA/newcerts
+touch myCA/index.txt
+echo "01" > myCA/serial
+
+生成根CA：
+openssl req -new -keyout myCA/rootCA.key -out myCA/rootCA.csr -config openssl.cnf
+openssl ca -batch -create_serial -out myCA/rootCA.crt -days 3650 -keyfile myCA/rootCA.key -selfsign -in myCA/rootCA.csr -extensions v3_ca -config openssl.cnf
+
+生成中间CA：
+openssl req -new -keyout myCA/intermediateCA.key -out myCA/intermediateCA.csr -config openssl.cnf
+openssl ca -batch -create_serial -out myCA/intermediateCA.crt -days 1825 -keyfile myCA/rootCA.key -in myCA/intermediateCA.csr -extensions v3_intermediate_ca -config openssl.cnf
+
+生成服务器/客户端证书：
+openssl req -new -keyout myCA/server.key -out myCA/server.csr -config openssl.cnf
+openssl ca -batch -create_serial -out myCA/server.crt -days 365 -keyfile myCA/intermediateCA.key -in myCA/server.csr -extensions server_cert -config openssl.cnf
+
+
+验证证书链：
+openssl verify -CAfile myCA/rootCA.crt -untrusted myCA/intermediateCA.crt myCA/server.crt
+
+
+
+为CA初始化目录和数据库-win：
+mkdir myCA
+cd myCA
+mkdir newcerts
+echo. > index.txt
+echo 01 > serial
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
