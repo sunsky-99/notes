@@ -191,9 +191,9 @@ docker run --name mysql-5.7.42 -p 3307:3306 -v /E/work/docker/mysql-5.7.42/data:
 
 docker run --name mysql-8.0.33 -p 3308:3306 -v /E/work/docker/mysql-8.0.33/data:/var/lib/mysql -v /E/work/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d -v /E/work/docker/mysql-8.0.33/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
 
-docker run --name mysql-5.7.42 -p 3307:3306 -v /usr/local/docker/mysql-5.7.42/data:/var/lib/mysql -v /usr/local/docker/mysql-5.7.42/mysql.conf.d:/etc/mysql/mysql.conf.d -v /usr/local/docker/mysql-5.7.42/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=22333@MySQLcloud_Zcy1! --net local-net -d mysql:5.7.42-debian --lower-case-table-names=1
+docker run --name mysql-5.7.42 -p 3307:3306 -v /usr/local/docker/mysql-5.7.42/data:/var/lib/mysql -v /usr/local/docker/mysql-5.7.42/mysql.conf.d:/etc/mysql/mysql.conf.d -v /usr/local/docker/mysql-5.7.42/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:5.7.42-debian --lower-case-table-names=1
 
-docker run --name mysql-8.0.33 -p 3308:3306 -v /usr/local/docker/mysql-8.0.33/data:/var/lib/mysql -v /usr/local/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d -v /usr/local/docker/mysql-8.0.33/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=22333@MySQLcloud_Zcy1! --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
+docker run --name mysql-8.0.33 -p 3308:3306 -v /usr/local/docker/mysql-8.0.33/data:/var/lib/mysql -v /usr/local/docker/mysql-8.0.33/conf.d:/etc/mysql/conf.d -v /usr/local/docker/mysql-8.0.33/logs:/var/log/mysql -e MYSQL_ROOT_PASSWORD=123456 --net local-net -d mysql:8.0.33-debian --lower-case-table-names=1
 
 
 // nginx
