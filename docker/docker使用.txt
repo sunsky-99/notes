@@ -142,7 +142,7 @@ docker build -t demo:1.2 .
 
 //============================================================================================
 
-DockerCompose 部署微服务集群 
+DockerCompose 部署微服务集群
 docker compose up -d
 docker-compose -f docker-compose-nacos.yml -p nacos up -d
 -f：指定使用的compose模板文件，默认为当前目录下的docker-compose.yaml文件，可以多次指定。 
