@@ -10,7 +10,6 @@ docker rmi eb4a57159180
 
 docker本地镜像打包导出
 docker save -o nginx.tar nginx:1.25
-docker save -o jetbrains-tools.tar jetbrains-tools:1.2
 // 不推荐；会丢失镜像名称和版本号
 docker save -o nginx.tar eb4a57159180 
 
@@ -19,8 +18,7 @@ docker load -i nginx.tar
 
 docker 创建容器时会运行该容器 
 docker run --name nginx_1.25 -p 80:80 -d nginx:1.25
-docker run --name nginx_1.25 -p 80:80 -d 021283c8eb95
-docker run --name jetbrains-tools -p 10768:10768 -d df60eb2206b3
+docker run --name nginx_1.25 -p 80:80 -d 021283c8eb95 
 // --name nginx_1.25 指定容器名称
 // -p 80:80 端口映射：前表示主机部分，：后表示容器部分。
 // -d 后台运行容器
